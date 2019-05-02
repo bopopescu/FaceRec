@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="css.css" rel="stylesheet" type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+</head>
+<body>
+
+    <div class="header_registration">
+		<img src="resources/avatar.png" class ="Logo" width="100px">
+
+		<h1 style="text-align: center;">New User registration</h1>
+
+		<form>
+            <h4>Account information</h4><br>
+			<input type="text" placeholder="Enter Username"><br>
+			<input type="password" placeholder="Enter Password"><br>
+            <input type="password" placeholder="Repeat Password"><br>
+            <h4>Personal information</h4><br>
+            <input type="text" placeholder="Enter Name"><br>
+            <input type="email" placeholder="Enter Email"><br>
+            <input type="number" min="18" max="99" placeholder="Enter Age"><br>
+            <input list="sexes" name="browser" placeholder="Choose Sex">
+                  <datalist id="sexes">
+                    <option value="Male">
+                    <option value="Female">
+                    <option value="Not specified">
+                  </datalist>
+            <h4>Facial metrics registration</h4>
+
+            <br>
+
+            <div id="basic" style="text-align:center;">
+              <video class="videostream" autoplay></video>
+              <p><button class="capture-button" type="button">Capture video</button> <button id="stop-button" type="button">Stop</button></p>
+            </div>
+
+            <p>    *Please move the face to: right, left, up and down.</p><br>
+
+
+
+			<input type="submit" value="Register" style="position:relative;bottom: 0%;"><br>
+		</form>
+
+	</div>
+
+    <script src="cameraRec.js"></script>
+
+</body>
+</html>

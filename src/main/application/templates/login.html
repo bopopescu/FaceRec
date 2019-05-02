@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="css.css" rel="stylesheet" type="text/css">
+<title>LogIn</title>
+</head>
+
+<body>
+
+	<div class="header">
+		<img src="resources/avatar.png" class ="Logo" width="100px">
+		<h1>LogIn Here.</h1>
+
+		<form>
+			<input type="text" placeholder="Enter Username"><br>
+			<input type="password" placeholder="Enter Password"><br>
+			<input type="submit" value="Login"><br>
+		</form>
+
+		<br>
+		<a class="Link" style="float: right" href="{{ url_for('.add_user_view') }}"> Register Here. </a>
+		<br>
+
+	</div>
+
+</body>
+
+</html>

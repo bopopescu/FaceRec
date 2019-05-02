@@ -1,0 +1,212 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	margin:0px;
+	padding:0px;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+	background: url("resources/1.jpg");
+	background-size:cover;
+}
+
+.header{
+	width:560px;
+	height:320px;
+	background-color:mediumturquoise;
+	padding:70px 30px;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	position:absolute;
+	border-radius: 10px;
+	box-sizing: border-box;
+	box-shadow: 4px 4px 6px black;
+}
+
+.Logo{
+	width:100px;
+	height:100px;
+	border-radius: 50px;
+	top:-30%;
+	left:30px;
+	position:absolute;
+	box-shadow: 4px 4px 6px black;
+	background: snow;
+}
+
+h1{
+	color: black;
+	font-family: century ghotic;
+	margin:0px;
+}
+
+input{
+	width:100%;
+	margin-bottom:10px;
+}
+
+input[type="text"],input[type="password"],input[type="email"],input[type="number"],input{
+	height:40px;
+	background: transparent;
+	border:none;
+	border-bottom: 1px solid aquamarine;
+	outline:none;
+	color: white;
+}
+
+input[type="submit"]{
+	height:40px;
+	background-color: snow;
+	outline:none;
+	color: black;
+	font-size: 25px;
+	font-weight: bold;
+	border: none;
+	border-radius: 10px;
+}
+
+input[type="submit"]:hover{
+	background-color: aquamarine;
+	color: black;
+	cursor: pointer;
+}
+
+.Link{
+	color: snow;
+	margin-bottom:10px;
+}
+
+.Link:hover{
+	cursor: pointer;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: mediumturquoise;
+  color: white;
+}
+
+.topnav-right {
+  float: right;
+}
+
+.header_page{
+	width:90%;
+	height:80%;
+	background-color: mediumturquoise;
+	padding:70px 30px;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	position:absolute;
+	border-radius: 10px;
+	box-sizing: border-box;
+	box-shadow: 4px 4px 6px black;
+}
+
+.header_page_title{
+	width:90%;
+	height:5%;
+	background-color: snow;
+	padding:30px 30px;
+	top:5%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	position:relative;
+	border-radius: 20px;
+	box-shadow: 4px 4px 6px black;
+	color: mediumturquoise;
+	text-align: center;
+	font-family: century ghotic;
+	font-size: 220%;
+}
+
+.Robot{
+	width:300px;
+	height:300px;
+	left: 3.5%;
+	border-radius: 30px;
+	position:relative;
+	box-shadow: 4px 4px 6px black;
+	background: whitesmoke;
+}
+
+.header_registration{
+	width:560px;
+	height:90%;
+	background-color:mediumturquoise;
+	padding:70px 30px;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	position:absolute;
+	border-radius: 10px;
+	box-sizing: border-box;
+	box-shadow: 4px 4px 6px black;
+	overflow: scroll;
+	overflow-x: hidden;
+}
+
+
+video, #cssfilters-video, #screenshot-img {
+  width: 400px;
+  height: 300px;
+}
+
+video, #cssfilters-stream {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid #ccc;
+}
+
+button{
+	height:40px;
+	background-color: snow;
+	outline:none;
+	color: black;
+	font-size: 25px;
+	font-weight: bold;
+	border: none;
+	border-radius: 10px;
+}
+
+button:hover{
+	background-color: #ddd;
+	color: black;
+	cursor: pointer;
+}
+
+html {
+    overflow: hidden;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+	display: none;
+}
+
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
