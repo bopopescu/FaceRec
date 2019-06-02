@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<link href="css.css" rel="stylesheet" type="text/css">
+<link href="../static/css.css" rel="stylesheet" type="text/css">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-    <div class="topnav">
-      <a href="#home">Home</a>
-      <a class="active" href="#news">Log</a>
-      <a href="#news">Attendance</a>
-<!--      <a href="#news">Reports</a>-->
+    <div class="topnav" id="myLinks">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a class="active" href="{{ url_for('log') }}">Log</a>
+      <a href="{{ url_for('table') }}">Attendance</a>
       <div class="topnav-right">
-        <a href="#about">Profile</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
       </div>
     </div>
 

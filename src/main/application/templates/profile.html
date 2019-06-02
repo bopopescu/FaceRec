@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<link href="css.css" rel="stylesheet" type="text/css">
+<link href="../static/css.css" rel="stylesheet" type="text/css">
 <head>
     <meta charset="UTF-8">
     <title>User page</title>
 </head>
 <body>
 
-    <div class="topnav">
-      <a href="#home">Home</a>
-      <a href="#news">Log</a>
-      <a href="#news">Attendance</a>
-<!--      <a href="#contact">Reports</a>-->
+    <div class="topnav" id="myLinks" >
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('log') }}">Log</a>
+      <a href="{{ url_for('table') }}">Attendance</a>
       <div class="topnav-right">
-        <a class="active" href="#about">Profile</a>
+        <a class="active"  href="{{ url_for('profile') }}">Profile</a>
       </div>
     </div>
 
 
     <div class="header_registration" style="margin-top:30px;margin-bottom:30px;" onscroll="dynamicheight()">
-		<img src="resources/avatar.png" class ="Logo" width="100px">
+		<img src="../static/avatar.png" class ="Logo" width="100px">
 
 		<h1 class="header_page_title">Profile info</h1>
 

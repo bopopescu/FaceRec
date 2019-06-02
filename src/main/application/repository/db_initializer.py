@@ -1,19 +1,29 @@
 from random import randint
 
 from mysql import connector
+
+from src.main.application.config.db_config import mysql
 from src.main.application.utils.random_date import getRandomDate
 from src.main.application.utils.random_hour import getRandomTime, getDuration
 
-mydb=connector.connect(
-    host="localhost",
-    user="root",
-    passwd=""
-)
+mydb=mysql.connect()
+
+#     host="localhost",
+#
+#     port="3306",
+#
+#     user="root",
+#
+#     passwd="",
+#
+#     db="recfacedb"
+#
+# )
 
 mycursor = mydb.cursor()
 
-mycursor.execute("DROP DATABASE RecFaceDB")
-mycursor.execute("CREATE DATABASE RecFaceDB")
+mycursor.execute("DROP DATABASE recfacedb")
+mycursor.execute("CREATE DATABASE recfacedb")
 
 mycursor.execute("USE recfacedb")
 
@@ -27,7 +37,7 @@ mycursor.execute("CREATE TABLE `user` ("
 )
 
 #create admin user
-mycursor.execute("INSERT INTO user(user_name,user_password) VALUES ('admin','admin')")
+mycursor.execute("INSERT INTO user(user_id,user_name,user_password) VALUES (0,'admin','admin')")
 
 #person table - id,name,email,age,sex,picture data
 mycursor.execute("CREATE TABLE `person` ("
@@ -63,6 +73,17 @@ mycursor.execute("CREATE TABLE `log` ("
   ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
 )
 
+# #user_person table - id,user,person
+# mycursor.execute("CREATE TABLE `user_person` ("
+#   "`id` bigint(20) NOT NULL AUTO_INCREMENT,"
+#   "`user_id` bigint(20) NOT NULL ,"
+#   "`person_id` bigint(20) NOT NULL ,"
+#   "PRIMARY KEY (`id`),"
+#   "FOREIGN KEY(`user_id`) REFERENCES user(`user_id`),"
+#   "FOREIGN KEY(`person_id`) REFERENCES person(`person_id`),"
+#   ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
+# )
+
 persons=["ana","alex","andrei","maria","elena","bogdan","radu","andreia","marius"]
 ages=[20,23,27,30,21,24,33,22,25]
 sexes=["female","male","male","female","female","male","male","male","male"]
@@ -82,8 +103,14 @@ insert_stmt_log = (
   "VALUES (%s, %s)"
 )
 
-insert_stmt_user=("INSERT INTO user(user_name,user_password)"
-                  "VALUES (%s, %s)"
+insert_stmt_user=(
+    "INSERT INTO user(user_id,user_name,user_password)"
+    "VALUES (%s, %s, %s)"
+)
+
+insert_stmt_user_person = (
+  "INSERT INTO user_person (user_id, person_id) "
+  "VALUES (%s, %s)"
 )
 
 for i in range (1, 1000):
@@ -102,14 +129,19 @@ for i in range (1, 1000):
     data_log=(randint(1,999),randint(1,999))
     mycursor.execute(insert_stmt_log, data_log)
 
-
-
-for p in persons:
-    data_user=(p,p)
+for i in range(3,len(persons)):
+    data_user=(i,persons[i],persons[i])
     mycursor.execute(insert_stmt_user,data_user)
+    # data_user_person=(i,i)
+    # mycursor.execute(insert_stmt_user_person,data_user_person)
 
 
 mycursor.execute("SHOW DATABASES")
 
 for db in mycursor:
     print(db)
+
+mydb.commit()
+
+mycursor.close()
+mydb.close()

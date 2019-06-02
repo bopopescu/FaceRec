@@ -1,19 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<link href="css.css" rel="stylesheet" type="text/css">
+<link href="../static/css.css" rel="stylesheet" type="text/css">
 <head>
     <meta charset="UTF-8">
     <title>User page</title>
 </head>
 <body>
 
-    <div class="topnav">
-      <a class="active" href="#home">Home</a>
-      <a href="#news">Log</a>
-      <a href="#news">Attendance</a>
-<!--      <a href="#contact">Reports</a>-->
+    <div class="topnav" id="myLinks">
+      <a class="active" href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('log') }}">Log</a>
+      <a href="{{ url_for('table') }}">Attendance</a>
       <div class="topnav-right">
-        <a href="#about">Profile</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
       </div>
     </div>
 
@@ -21,9 +20,9 @@
 
       <h1 class="header_page_title">Facial recognicion attendance</h1>
 
-      <img src="resources/2.JPG" class="Robot">
+      <img src="../static/2.JPG" class="Robot">
 
-      <div style="top:-60%;left:30%;position: relative;">
+      <div style="top:-52%;left:30%;position: relative;">
           <p style="color: whitesmoke;font-family: century ghotic;font-size: 20px;">
               <br>This application is used for logging the timestamps and data for the user, with the security of facial recognition.
               <br>
@@ -40,6 +39,6 @@
     </div>
 
 
-
 </body>
+
 </html>

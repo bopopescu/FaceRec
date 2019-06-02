@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="recfacedb@localhost" uuid="9a40570d-1cfd-4109-9dd3-5b0adb9da148">
+    <data-source source="LOCAL" name="recfacedb@localhost" uuid="0e677987-967f-4f8b-9923-50919caaa53d">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

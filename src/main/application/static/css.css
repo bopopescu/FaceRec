@@ -7,7 +7,7 @@ body{
 	-webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-	background: url("resources/1.jpg");
+	background: url("1.jpg");
 	background-size:cover;
 }
 
@@ -122,6 +122,8 @@ input[type="submit"]:hover{
 	border-radius: 10px;
 	box-sizing: border-box;
 	box-shadow: 4px 4px 6px black;
+	overflow-x:auto;
+	overflow-y:auto;
 }
 
 .header_page_title{
@@ -210,3 +212,16 @@ html {
 ::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
+
+.table-hover {
+	background: whitesmoke;
+}
+
+.table-hover tr:hover{
+	background: mediumturquoise;
+}
+
+.table-hover th{
+	background: #dddddd;
+}
+

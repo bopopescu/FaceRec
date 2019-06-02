@@ -1,54 +1,43 @@
 import pymysql
-from src.main.application.repository.app import app
+from flask import render_template, request
+
+from src.main.application.app import app
+from src.main.application.config.db_config import mysql
 from src.main.application.web_components.tables import Results
-from src.main.application.repository.db_config import mysql
-from flask import flash, render_template, request, redirect
-from werkzeug import generate_password_hash
-
-
-@app.route('/new_user')
-def add_user_view():
-    return render_template('add.html')
-
-
-@app.route('/add', methods=['POST'])
-def add_user():
-    try:
-        _name = request.form['inputName']
-        _email = request.form['inputEmail']
-        _password = request.form['inputPassword']
-        # validate the received values
-        if _name and _email and _password and request.method == 'POST':
-            # do not save password as a plain text
-            _hashed_password = generate_password_hash(_password)
-            # save edits
-            sql = "INSERT INTO tbl_user(user_name, user_email, user_password) VALUES(%s, %s, %s)"
-            data = (_name, _email, _hashed_password,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            flash('User added successfully!')
-            return redirect('/')
-        else:
-            return 'Error while adding user'
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
 
 
 @app.route('/')
-def users():
+def start():
+    return render_template('login.html')
+
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+@app.route('/log')
+def log():
+    return render_template('log.html')
+
+@app.route('/table')
+def table():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM tbl_user")
+        cursor.execute("SELECT *"                        
+                        "FROM person AS p "
+                        "JOIN log AS l "
+                        "    on p.person_id = l.log_person "
+                        "JOIN attendance AS a "
+                        "    on l.log_attendance = a.attendance_id ")
         rows = cursor.fetchall()
         table = Results(rows)
         table.border = True
-        return render_template('users.html', table=table)
+        return render_template('table.html', table=table)
     except Exception as e:
         print(e)
     finally:
@@ -56,67 +45,31 @@ def users():
         conn.close()
 
 
-@app.route('/edit/<int:id>')
-def edit_view(id):
+@app.route('/home',methods=['GET'])
+def home():
+    return render_template('home.html')
+
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    _name = request.form['inputName']
+    _password = request.form['inputPassword']
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM tbl_user WHERE user_id=%s", id)
+        cursor.execute("SELECT user_id FROM user WHERE user_name=%s AND user_password=%s", [_name,_password])
         row = cursor.fetchone()
         if row:
-            return render_template('edit.html', row=row)
+            return render_template('home.html')
         else:
-            return 'Error loading #{id}'.format(id=id)
+            return 'Error loading #{_name}'.format(name=_name)
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         conn.close()
 
-
-@app.route('/update', methods=['POST'])
-def update_user():
-    try:
-        _name = request.form['inputName']
-        _email = request.form['inputEmail']
-        _password = request.form['inputPassword']
-        _id = request.form['id']
-        # validate the received values
-        if _name and _email and _password and _id and request.method == 'POST':
-            # do not save password as a plain text
-            _hashed_password = generate_password_hash(_password)
-            # save edits
-            sql = "UPDATE tbl_user SET user_name=%s, user_email=%s, user_password=%s WHERE user_id=%s"
-            data = (_name, _email, _hashed_password, _id,)
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            cursor.execute(sql, data)
-            conn.commit()
-            flash('User updated successfully!')
-            return redirect('/')
-        else:
-            return 'Error while updating user'
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
-
-
-@app.route('/delete/<int:id>')
-def delete_user(id):
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM tbl_user WHERE user_id=%s", (id,))
-        conn.commit()
-        flash('User deleted successfully!')
-        return redirect('/')
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
 
 
 if __name__ == "__main__":
