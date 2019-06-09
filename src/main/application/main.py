@@ -1,9 +1,14 @@
+import cv2
+import numpy as np
 import pymysql
 from flask import render_template, request
-
 from src.main.application.app import app
 from src.main.application.config.db_config import mysql
 from src.main.application.web_components.tables import Results
+from PIL import Image
+import base64
+
+
 
 
 @app.route('/')
@@ -19,8 +24,21 @@ def register():
 def profile():
     return render_template('profile.html')
 
-@app.route('/log')
+@app.route('/log',methods=["GET","POST"])
 def log():
+    if request.method == 'POST':
+        data_url = request.data
+        content = data_url.split(b';')[1]
+        image_encoded = content.split(b',')[1]
+        data = base64.decodebytes(image_encoded)
+        nparr = np.frombuffer(data, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+        # verify if image is received correctly
+        # cv2.imshow('Image',img)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
     return render_template('log.html')
 
 @app.route('/table')
