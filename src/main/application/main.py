@@ -5,8 +5,8 @@ from flask import render_template, request
 from src.main.application.app import app
 from src.main.application.config.db_config import mysql
 from src.main.application.web_components.tables import Results
-from PIL import Image
 import base64
+
 
 
 
