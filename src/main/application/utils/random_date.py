@@ -19,7 +19,7 @@ def strTimeProp(start, end, format, prop):
 
 
 def randomDate(start, end, prop):
-    return strTimeProp(start, end, '%m/%d/%Y', prop)
+    return strTimeProp(start, end, '%d/%m/%Y', prop)
 
 #print (randomDate("1/1/2008", "1/1/2019", random.random()))
 

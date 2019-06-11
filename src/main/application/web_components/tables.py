@@ -13,5 +13,5 @@ class Results(Table):
     attendance_id = Col('Id_Attendance',show=False)
     attendance_date = Col('Date')
     attendance_in = Col('In')
-    attendance_out = Col('Out')
-    attendance_duration = Col('Duration')
+    attendance_out = Col('Out',show=False)
+    attendance_duration = Col('Duration',show=False)

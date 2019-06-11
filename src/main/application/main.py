@@ -1,3 +1,5 @@
+from random import randint
+
 import cv2
 import numpy as np
 import pymysql
@@ -6,7 +8,7 @@ from src.main.application.app import app
 from src.main.application.config.db_config import mysql
 from src.main.application.web_components.tables import Results
 import base64
-
+from src.main.FaceRec.FaceRec import FaceRec
 
 
 
@@ -39,6 +41,60 @@ def log():
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
+        #recog_data[0][0] - name of the recognized person
+        #recog_data[0][1] - precision
+        recog_data = facerec.camera_recog(img)
+
+        try:
+            from datetime import date,datetime
+
+            today = date.today()
+            # dd/mm/YY
+            d1 = today.strftime("%d/%m/%Y")
+
+            now = datetime.now()
+            current_time = now.strftime("%H:%M")
+
+            conn = mysql.connect()
+            cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+            cursor.execute("SELECT a.attendance_id FROM attendance AS a ORDER BY a.attendance_id DESC LIMIT 1")
+            result = cursor.fetchone()
+            attendance_id = result['attendance_id']
+            attendance_id  = attendance_id+1
+
+            data_attendance = (attendance_id, d1, current_time, current_time, 0)
+            insert_stmt_attendance = (
+                "INSERT INTO attendance (attendance_id, attendance_date, attendance_in, attendance_out, attendance_duration) "
+                "VALUES (%s, %s, %s, %s, %s)"
+            )
+            cursor.execute(insert_stmt_attendance, data_attendance)
+            conn.commit()
+
+            select_person_id_data = recog_data[0][0]
+            select_person_id_stmt = (
+                "SELECT p.person_id "
+                "FROM person AS p "
+                "WHERE p.person_name LIKE %s"
+            )
+            cursor.execute(select_person_id_stmt,select_person_id_data)
+            result = cursor.fetchone()
+            person_id = result['person_id']
+
+            data_log = (person_id, attendance_id)
+            insert_stmt_log = (
+                "INSERT INTO log (log_person, log_attendance) "
+                "VALUES (%s, %s)"
+            )
+            cursor.execute(insert_stmt_log, data_log)
+            conn.commit()
+
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
     return render_template('log.html')
 
 @app.route('/table')
@@ -46,12 +102,13 @@ def table():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT *"                        
+        cursor.execute( "SELECT * "                        
                         "FROM person AS p "
                         "JOIN log AS l "
                         "    on p.person_id = l.log_person "
                         "JOIN attendance AS a "
-                        "    on l.log_attendance = a.attendance_id ")
+                        "    on l.log_attendance = a.attendance_id "
+                        "ORDER BY STR_TO_DATE(a.attendance_date,'%d/%m/%Y') DESC, a.attendance_in DESC")
         rows = cursor.fetchall()
         table = Results(rows)
         table.border = True
@@ -91,4 +148,5 @@ def login():
 
 
 if __name__ == "__main__":
+    facerec = FaceRec()
     app.run()
