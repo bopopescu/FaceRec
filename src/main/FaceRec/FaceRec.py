@@ -2,12 +2,10 @@
 FaceRec program
 '''
 
-import cv2
 from src.main.FaceRec.align_custom import AlignCustom
 from src.main.FaceRec.face_feature import FaceFeature
 from src.main.FaceRec.mtcnn_detect import MTCNNDetect
 from src.main.FaceRec.tf_graph import FaceRecGraph
-import argparse
 import sys
 import json
 import numpy as np
@@ -22,15 +20,12 @@ class FaceRec(object):
         self.extract_feature = FaceFeature(FRGraph)
         self.face_detect = MTCNNDetect(MTCNNGraph, scale_factor=2);  # scale_factor, rescales image for faster detection
 
-    # def main(args):
-    #     mode = args.mode
-    #     mode="camera"
+
     #     if(mode == "camera"):
     #         camera_recog()
     #     elif mode == "input":
     #         create_manual_data();
-    #     else:
-    #         raise ValueError("Unimplemented mode")
+
     '''
     Description:
     Images from Video Capture -> detect faces' regions -> crop those faces and align them 
@@ -112,29 +107,25 @@ class FaceRec(object):
         -> Save
         
     '''
-    def create_manual_data(self):
-        vs = cv2.VideoCapture(0); #get input from webcam
-        print("Please input new user ID:")
-        new_name = input(); #ez python input()
-        f = open('./facerec_128D.txt','r');
-        data_set = json.loads(f.read());
+    def create_manual_data(self,frameList,userID):
+        new_name = userID;
+        f = open('C:\\Users\\birsa\\FaceRec\\FaceRec\\src\\main\\FaceRec\\facerec_128D.txt','r');
+        r = f.read();
+        f.close();
+        data_set = json.loads(r);
         person_imgs = {"Left" : [], "Right": [], "Center": []};
         person_features = {"Left" : [], "Right": [], "Center": []};
-        print("Please start turning slowly. Press 'q' to save and add this new user to the dataset");
-        while True:
-            _, frame = vs.read();
+        for frame in frameList:
             rects, landmarks = self.face_detect.detect_face(frame, 80);  # min face size is set to 80x80
             for (i, rect) in enumerate(rects):
                 aligned_frame, pos = self.aligner.align(160,frame,landmarks[:,i]);
                 if len(aligned_frame) == 160 and len(aligned_frame[0]) == 160:
                     person_imgs[pos].append(aligned_frame)
-                    cv2.imshow("Captured face", aligned_frame)
-            key = cv2.waitKey(1) & 0xFF
-            if key == ord("q"):
-                break
 
         for pos in person_imgs: #there r some exceptions here, but I'll just leave it as this to keep it simple
-            person_features[pos] = [np.mean(self.extract_feature.get_features(person_imgs[pos]),axis=0).tolist()]
+            if(len(person_imgs[pos])!=0):
+                person_features[pos] = [np.mean(self.extract_feature.get_features(person_imgs[pos]),axis=0).tolist()]
         data_set[new_name] = person_features;
-        f = open('./facerec_128D.txt', 'w');
-        f.write(json.dumps(data_set))
+        f = open('C:\\Users\\birsa\\FaceRec\\FaceRec\\src\\main\\FaceRec\\facerec_128D.txt', 'w');
+        f.write(json.dumps(data_set));
+        f.close();

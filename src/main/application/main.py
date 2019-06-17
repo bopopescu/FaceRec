@@ -8,9 +8,12 @@ from src.main.application.app import app
 from src.main.application.config.db_config import mysql
 from src.main.application.web_components.tables import Results
 import base64
+import json
 from src.main.FaceRec.FaceRec import FaceRec
 
 
+
+imagesToRegister = [];
 
 
 @app.route('/')
@@ -18,9 +21,90 @@ def start():
     return render_template('login.html')
 
 
-@app.route('/register')
+@app.route('/register', methods=['POST','GET'])
 def register():
+    if request.method == 'POST':
+
+        if( len(imagesToRegister)==0 ):
+
+            data_url = request.json
+
+            for image in data_url:
+                content = image.split(';')[1]
+                data = content.split(',')[1]
+                image_encoded = base64.standard_b64decode(data)
+                nparr = np.frombuffer(image_encoded, np.uint8)
+                img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+                imagesToRegister.append(img);
+
+        else:
+
+            _username = request.form['inputUsername']
+            _password = request.form['inputPass']
+            _password2 = request.form['inputPass2']
+
+            _name = request.form['inputName']
+            _email = request.form['inputEmail']
+            _age = request.form['inputAge']
+            _sex = request.form['inputSex']
+
+            try:
+                conn = mysql.connect()
+                cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+                cursor.execute("SELECT user_id FROM user ORDER BY user_id DESC LIMIT 1")
+                result = cursor.fetchone()
+                user_id = result['user_id']
+                user_id = user_id + 1
+
+                data_user = (user_id, _username, _password)
+                insert_stmt_user = (
+                    "INSERT INTO user (user_id,user_name,user_password) "
+                    "VALUES (%s, %s, %s)"
+                )
+                cursor.execute(insert_stmt_user, data_user)
+                # conn.commit()
+
+                cursor.execute("SELECT person_id FROM person ORDER BY person_id DESC LIMIT 1")
+                result = cursor.fetchone()
+                person_id = result['person_id']
+                person_id = person_id + 1
+
+                data_person = (person_id, _name, _email, _age, _sex, "")
+                insert_stmt_person = (
+                    "INSERT INTO person (person_id,person_name,person_email,person_age,person_sex,person_picture_data) "
+                    "VALUES (%s, %s, %s, %s, %s, %s)"
+                )
+                cursor.execute(insert_stmt_person, data_person)
+                # conn.commit()
+
+                data_user_person = (user_id, person_id)
+                insert_stmt_user_person = (
+                    "INSERT INTO user_person (user_id,person_id) "
+                    "VALUES (%s, %s)"
+                )
+                cursor.execute(insert_stmt_user_person, data_user_person)
+                conn.commit()
+
+            except Exception as e:
+                print(e)
+            finally:
+                cursor.close()
+                conn.close()
+
+
+            #creates the new user face alignament data
+            facerec.create_manual_data(imagesToRegister,_name);
+
+            #clears the image list
+            imagesToRegister.clear()
+
+        return render_template('login.html')
+
+    # if request.method == 'GET':
     return render_template('register.html')
+
 
 @app.route('/profile')
 def profile():

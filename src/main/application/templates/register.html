@@ -12,16 +12,16 @@
 
 		<h1 style="text-align: center;">New User registration</h1>
 
-		<form>
+		<form action = "http://localhost:5000/register" method = "POST">
             <h4>Account information</h4><br>
-			<input type="text" placeholder="Enter Username"><br>
-			<input type="password" placeholder="Enter Password"><br>
-            <input type="password" placeholder="Repeat Password"><br>
+			<input name="inputUsername" type="text" placeholder="Enter Username"><br>
+			<input name="inputPass" type="password" placeholder="Enter Password"><br>
+            <input name="inputPass2" type="password" placeholder="Repeat Password"><br>
             <h4>Personal information</h4><br>
-            <input type="text" placeholder="Enter Name"><br>
-            <input type="email" placeholder="Enter Email"><br>
-            <input type="number" min="18" max="99" placeholder="Enter Age"><br>
-            <input list="sexes" name="browser" placeholder="Choose Sex">
+            <input name="inputName" type="text" placeholder="Enter Name"><br>
+            <input name="inputEmail" type="email" placeholder="Enter Email"><br>
+            <input name="inputAge" type="number" min="18" max="99" placeholder="Enter Age"><br>
+            <input name="inputSex" list="sexes" name="browser" placeholder="Choose Sex">
                   <datalist id="sexes">
                     <option value="Male">
                     <option value="Female">
@@ -33,7 +33,11 @@
 
             <div id="basic" style="text-align:center;">
               <video class="videostream" autoplay></video>
-              <p><button class="capture-button" type="button">Capture video</button> <button id="stop-button" type="button">Stop</button></p>
+              <p>
+                  <button class="capture-button" type="button">Capture video</button>
+                  <button id="record-button" type="button">Record</button>
+                  <button id="stop-button" type="button">Stop</button>
+              </p>
             </div>
 
             <p>    *Please move the face to: right, left, up and down.</p><br>
@@ -46,6 +50,7 @@
 	</div>
 
     <script src="../static/cameraRec.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
 </body>
 </html>

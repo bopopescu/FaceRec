@@ -73,16 +73,16 @@ mycursor.execute("CREATE TABLE `log` ("
   ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
 )
 
-# #user_person table - id,user,person
-# mycursor.execute("CREATE TABLE `user_person` ("
-#   "`id` bigint(20) NOT NULL AUTO_INCREMENT,"
-#   "`user_id` bigint(20) NOT NULL ,"
-#   "`person_id` bigint(20) NOT NULL ,"
-#   "PRIMARY KEY (`id`),"
-#   "FOREIGN KEY(`user_id`) REFERENCES user(`user_id`),"
-#   "FOREIGN KEY(`person_id`) REFERENCES person(`person_id`),"
-#   ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
-# )
+#user_person table - id,user_id,person_id
+mycursor.execute("CREATE TABLE `user_person` ("
+  "`id` bigint(20) NOT NULL AUTO_INCREMENT,"
+  "`user_id` bigint(20) NOT NULL ,"
+  "`person_id` bigint(20) NOT NULL ,"
+  "PRIMARY KEY (`id`),"
+  "FOREIGN KEY(`user_id`) REFERENCES user(`user_id`),"
+  "FOREIGN KEY(`person_id`) REFERENCES person(`person_id`) "
+  ") ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
+)
 
 persons=["ana","alex","andrei","maria","elena","bogdan","radu","andreia","marius"]
 ages=[20,23,27,30,21,24,33,22,25]
@@ -132,8 +132,8 @@ for i in range (1, 1000):
 for i in range(3,len(persons)):
     data_user=(i,persons[i],persons[i])
     mycursor.execute(insert_stmt_user,data_user)
-    # data_user_person=(i,i)
-    # mycursor.execute(insert_stmt_user_person,data_user_person)
+    data_user_person=(i,i)
+    mycursor.execute(insert_stmt_user_person,data_user_person)
 
 
 mycursor.execute("SHOW DATABASES")
