@@ -15,6 +15,7 @@ from src.main.FaceRec.FaceRec import FaceRec
 
 imagesToRegister = [];
 
+newImagesToRegister = [];
 
 @app.route('/')
 def start():
@@ -106,8 +107,34 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/profile')
+@app.route('/profile', methods=['POST','GET'])
 def profile():
+    if request.method == 'POST':
+
+        if( len(newImagesToRegister)==0 ):
+
+            data_url = request.json
+
+            for image in data_url:
+                content = image.split(';')[1]
+                data = content.split(',')[1]
+                image_encoded = base64.standard_b64decode(data)
+                nparr = np.frombuffer(image_encoded, np.uint8)
+                img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+                newImagesToRegister.append(img);
+
+        else:
+
+            _name = request.form['inputName']
+
+            #creates the new user face alignament data
+            facerec.create_manual_data(newImagesToRegister,_name);
+
+            #clears the image list
+            newImagesToRegister.clear();
+
+    # if request.method == 'GET':
     return render_template('profile.html')
 
 @app.route('/log',methods=["GET","POST"])

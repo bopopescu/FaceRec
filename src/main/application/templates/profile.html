@@ -17,52 +17,34 @@
     </div>
 
 
-    <div class="header_registration" style="margin-top:30px;margin-bottom:30px;" onscroll="dynamicheight()">
+    <div class="header_registration" style="margin-top:30px;margin-bottom:30px;">
 		<img src="../static/avatar.png" class ="Logo" width="100px">
+		<h1 class="header_page_title">Profile update</h1>
 
-		<h1 class="header_page_title">Profile info</h1>
+		<form action = "http://localhost:5000/profile" method = "POST">
+            <h4>Required information</h4>
+            <input name="inputName" type="text" placeholder="Enter Name">
 
-		<form>
-            <h4>Personal information</h4><br>
-            <input type="text" placeholder="Enter Name"><br>
-            <input type="email" placeholder="Enter Email"><br>
-            <input type="number" min="18" max="99" placeholder="Enter Age"><br>
-            <input list="sexes" name="browser" placeholder="Choose Sex">
-                  <datalist id="sexes">
-                    <option value="Male">
-                    <option value="Female">
-                    <option value="Not specified">
-                  </datalist>
-            <h4>Facial metrics registration</h4>
-
-            <br>
+            <h4>Update facial metrics</h4><br>
 
             <div id="basic" style="text-align:center;">
               <video class="videostream" autoplay></video>
-              <p><button class="capture-button" type="button">Capture video</button> <button id="stop-button" type="button">Stop</button></p>
+              <p>
+                  <button class="capture-button" type="button">Capture video</button>
+                  <button id="record-button" type="button">Record</button>
+                  <button id="stop-button" type="button">Stop</button>
+              </p>
             </div>
 
-            <p>    *Please move the face to: right, left, up and down.</p><br>
-
-            <script src="../static/cameraRec.js"></script>
-
-            <h4>Account information</h4><br>
-			<input type="password" placeholder="Enter Old Password"><br>
-			<input type="password" placeholder="Enter Password"><br>
-            <input type="password" placeholder="Repeat Password"><br>
+            <p>    *Please move the face to: right, left, up and down.</p>
 
 			<input type="submit" value="Update" style="position:relative;bottom: 0%;"><br>
 		</form>
 
 	</div>
 
-    <script>
-        function dynamicheight() {
-            var content = document.getElementById("content");
-            var y = content.scrollTop;
-            document.getElementById('random').style.height = y;
-        }
-    </script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="../static/cameraRecNew.js"></script>
 
 </body>
 </html>
